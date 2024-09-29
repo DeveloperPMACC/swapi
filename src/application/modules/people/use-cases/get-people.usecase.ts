@@ -14,7 +14,7 @@ export class GetPeopleUseCase {
     } catch (error) {
       this.logger.error(
         `Error getting character with ID ${id}:`,
-        error.message,
+        error,
       );
       throw error;
     }
@@ -25,7 +25,7 @@ export class GetPeopleUseCase {
       const people = await this.swapiService.findAll();
       return people.map((person) => this.translateAttributes(person));
     } catch (error) {
-      this.logger.error('Error getting character list:', error.message);
+      this.logger.error('Error getting character list:', error);
       throw error;
     }
   }

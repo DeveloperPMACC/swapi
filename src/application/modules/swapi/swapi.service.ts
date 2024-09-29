@@ -17,8 +17,8 @@ export class SwapiService {
       const response:AxiosResponse = await axios.get(`${this.baseUrl}/people`);
       return response.data.results;
     } catch (error) {
-      this.logger.error(error.message);
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      this.logger.error(error);
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -27,8 +27,8 @@ export class SwapiService {
       const response:AxiosResponse = await axios.get(`${this.baseUrl}/people/${id}`);
       return response.data;
     } catch (error) {
-      this.logger.error(error.message);
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      this.logger.error(error);
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }
   }
 }

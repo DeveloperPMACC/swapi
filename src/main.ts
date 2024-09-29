@@ -2,9 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-import serverless from 'serverless-http';
-
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -17,10 +14,11 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
-
-  return serverless(app as any);
+  await app.init();
+  return app.getHttpAdapter().getInstance().handler;
 }
 
-export const handler = bootstrap();
-
+export const handler = bootstrap().then(app => (event, context) => {
+  return app(event, context);
+});
 

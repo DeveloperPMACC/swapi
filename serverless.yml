@@ -2,7 +2,7 @@ service: star-wars-api
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
   region: us-east-2
   stage: dev
   environment:
@@ -16,18 +16,29 @@ provider:
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}
 
 functions:
-  api:
-    handler: dist/main.handler
+  app:
+    handler: dist/bundle.handler
     events:
       - http:
-          path: /
-          method: ANY
-      - http:
-          path: /{proxy+}
+          path: api
           method: ANY
 
 plugins:
   - serverless-offline
   - serverless-webpack
+
+package:
+  individually: true
+  exclude:
+    - node_modules/**
+    - src/**
+    - tests/**
+    - webpack.config.js
+
+custom:
+  webpack:
+    webpackConfig: './webpack.config.js'
+    includeModules: true
+
 build:
   esbuild: false
