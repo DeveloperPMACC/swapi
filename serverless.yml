@@ -1,44 +1,36 @@
-service: star-wars-api
+service: swapi-serverless
 
 provider:
   name: aws
-  runtime: nodejs16.x
+  runtime: nodejs18.x
   region: us-east-2
   stage: dev
-  environment:
-    DYNAMODB_TABLE: 'Peoples'
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:PutItem
-        - dynamodb:GetItem
-        - dynamodb:Scan
-      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}
 
 functions:
   app:
-    handler: dist/bundle.handler
+    handler: dist/main.handler
     events:
       - http:
-          path: api
-          method: ANY
+          path: /
+          method: any
+      - http:
+          path: api/docs
+          method: get
+      - http:
+          path: api/docs/json
+          method: get
+      - http:
+          path: api/swapi/people
+          method: get
+      - http:
+          path: api/swapi/people
+          method: post
+      - http:
+          path: api/swapi/people/{id}
+          method: get
 
 plugins:
   - serverless-offline
-  - serverless-webpack
 
 package:
   individually: true
-  exclude:
-    - node_modules/**
-    - src/**
-    - tests/**
-    - webpack.config.js
-
-custom:
-  webpack:
-    webpackConfig: './webpack.config.js'
-    includeModules: true
-
-build:
-  esbuild: false

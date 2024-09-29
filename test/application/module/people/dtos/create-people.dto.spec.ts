@@ -48,7 +48,7 @@ describe('CreatePeopleDto', () => {
     dto.edited = '2014-12-20T21:17:56.891000Z';
 
     const errors = await validate(dto);
-    expect(errors.length).toBe(0); // No debe haber errores
+    expect(errors.length).toBe(0);
   });
 
   it('should fail if the URL is invalid', async () => {
@@ -64,7 +64,7 @@ describe('CreatePeopleDto', () => {
     dto.species = [];
     dto.starships = [];
     dto.vehicles = [];
-    dto.url = 'invalid-url'; // URL inválida
+    dto.url = 'invalid-url';
     dto.created = '2014-12-09T13:50:51.644000Z';
     dto.edited = '2014-12-20T21:17:56.891000Z';
 
